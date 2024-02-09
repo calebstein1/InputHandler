@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace InputHandler;
 
@@ -23,5 +25,14 @@ public class InputHandler
         return _inputMap.Keys.FirstOrDefault(a =>
                 _inputMap[a].Any(k =>
                     k.IsTriggered()));
+    }
+
+    public void InputByActionMap(Dictionary<string, Action> actionMap)
+    {
+        foreach (var kvp in actionMap.Where(kvp =>
+                     IsActionTriggered(kvp.Key)))
+        {
+            kvp.Value.Invoke();
+        }
     }
 }

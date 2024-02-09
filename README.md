@@ -11,7 +11,7 @@ Then, as can be seen in the example configuration below, you'll just add diction
 
 ## Usage
 
-First, you'll need to initialize a new InputHandler object with an inputmap, which is a `Dictionary<string, List<IInputAction>>`.
+First, you'll need to initialize a new InputHandler object with an InputMap, which is a `Dictionary<string, List<IInputAction>>`.
 Here's an example inputmap and initialization:
 ```csharp
 private readonly Dictionary<string, List<IInputAction>> _inputMap = new()
@@ -33,9 +33,30 @@ public Game1()
     // Other constructor code...
 }
 ```
-Then there are two methods by which you can use this library in your game loop: IsActionTriggered(string inputAction) and GetTriggeredAction().
+Then there are a few methods by which you can use this library in your game loop: InputByActionMap, IsActionTriggered, GetTriggeredAction.
 
-#### IsActionTriggered(string inputAction)
+#### InputByActionMap
+
+This is the preferred method to define what happens on each action.
+You'll  need to create an ActionMap, which is a `Dictionary<string, Action>`, and pass that into the `InputByActionMap` function.
+Here's an example setup using an ActionMap:
+```csharp
+var actionMap = new Dictionary<string, Action>
+{
+    { "Up", () => Player.MoveUp() },
+    { "Down", () => Player.MoveDown() },
+    { "Left", () => Player.MoveLeft() },
+    { "Right", () => Player.MoveRight() },
+    { "PrimaryAction", () => Player.PrimaryAction() },
+    { "SecondaryAction", () => Player.SecondaryAction() }
+};
+
+_inputHandler.InputByActionMap(actionMap);
+```
+This setup allows for ActionMaps to be defined on instances of objects as well as per scene or level, and allows for easy context-based switching of ActionMaps by simply changes which map is passed into the InputByActionMap method.
+The less-refined IsActionTriggered and GetTriggeredAction methods are still suppored and do have their use cases, but ActionMaps are the generally perferred solution for defining what happens on each input.
+
+#### IsActionTriggered
 
 The IsActionTriggered method takes the name of a defined action as a parameter and will return a boolean depending on whether or not a mapped input for that action is currently being pressed.
 ```csharp
@@ -45,9 +66,11 @@ if (_inputHandler.IsActionTriggered("Left"))
     Player.MoveLeft();
 ```
 
-#### GetTriggeredAction()
+#### GetTriggeredAction
 
 The GetTriggeredAction method returns as a string the name of the action associated with the currently triggered input.
+This doesn't work all that well at the moment, as it simply returns the name of the first action it detects, so it doesn't work reliably when multiple actions are triggered at once.
+This will likely be updated to return a List<string> of each currently triggered action.
 ```csharp
 switch (_inputHandler.GetTriggeredAction())
 {
