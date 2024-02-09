@@ -1,54 +1,54 @@
-# MonoGame Keyboard Handler
+# MonoGame Input Handler
 
-This is a very basic keyboard event handler for the MonoGame framework.
-It allows you to map multiple keys to a single event using a dictionary mapping event names to a list of keys.
+This is a basic input event handler for the MonoGame framework.
+It allows you to map multiple inputs to a single event using a dictionary mapping event names to a list of inputs.
 
 ## Configuration 
 
-You can reference this project in your game project, or just copy KeyboardHandler.cs into your project and make sure the namespace is updated accordingly.
-Then, as can be seen in the example configuration, you'll just add dictionary entries containing your event name as a string and a list of keys that map to that event as a new `List<Keys>`.
+You can reference this project in your game project, or just copy all of the .cs files into your project and make sure the namespace is updated accordingly.
+Then, as can be seen in the example configuration, you'll just add dictionary entries containing your event name as a string and a list of inputs that map to that event as a new `List<IInputAction>`.
 
 ## Usage
 
-First, you'll need to initialize a new KeyboardHandler object with a keymap, which is a `Dictionary<string, List<Keys>>`.
+First, you'll need to initialize a new InputHandler object with a keymap, which is a `Dictionary<string, List<IInputAction>>`.
 Here's an example keymap and initialization:
 ```csharp
-private readonly Dictionary<string, List<Keys>> KeyMap = new()
+private readonly Dictionary<string, List<IInputAction>> _inputMap = new()
 {
-    { "Up", new List<Keys>{ Keys.W, Keys.Up } },
-    { "Down", new List<Keys>{ Keys.S, Keys.Down } },
-    { "Left", new List<Keys>{ Keys.A, Keys.Left } },
-    { "Right", new List<Keys>{ Keys.D, Keys.Right } },
-    { "Dash", new List<Keys>{ Keys.LeftShift, Keys.RightShift } },
-    { "PrimaryAction", new List<Keys>{ Keys.Space } },
-    { "SecondaryAction", new List<Keys>{ Keys.LeftControl, Keys.RightControl} },
+    { "Up", new List<IInputAction> { new KeyboardAction(Keys.W), new KeyboardAction(Keys.Up), new GamePadAction(Buttons.LeftThumbstickUp) } },
+    { "Down", new List<IInputAction> { new KeyboardAction(Keys.S), new KeyboardAction(Keys.Down), new GamePadAction(Buttons.LeftThumbstickDown) } },
+    { "Left", new List<IInputAction> { new KeyboardAction(Keys.A), new KeyboardAction(Keys.Left), new GamePadAction(Buttons.LeftThumbstickLeft) } },
+    { "Right", new List<IInputAction> { new KeyboardAction(Keys.D), new KeyboardAction(Keys.Right), new GamePadAction(Buttons.LeftThumbstickRight) } },
+    { "Dash", new List<IInputAction> { new KeyboardAction(Keys.LeftShift), new KeyboardAction(Keys.RightShift), new GamePadAction(Buttons.LeftTrigger) } },
+    { "PrimaryAction", new List<IInputAction> { new KeyboardAction(Keys.Space), new MouseClickedAction("Left"), new GamePadAction(Buttons.A) } },
+    { "SecondaryAction", new List<IInputAction> { new KeyboardAction(Keys.LeftControl), new KeyboardAction(Keys.RightControl), new MouseClickedAction("Right"), new GamePadAction(Buttons.RightTrigger) } },
 };
 
-private readonly KeyboardHandler _keyboardHandler;
+private readonly InputHandler _inputHandler;
 
 public Game1()
 {
-    _keyboardHandler = new Keyboardhandler(KeyMap);
+    _inputHandler = new InputHandler(_inputMap);
     // Other constructor code...
 }
 ```
-Then there are two methods by which you can use this library in your game loop: IsActionPressed(string keyAction) and GetPressedAction().
+Then there are two methods by which you can use this library in your game loop: IsActionTriggered(string keyAction) and GetTriggeredAction().
 
 #### IsActionPressed(string keyAction)
 
 The Action method takes the name of a defined action as a parameter and will return a boolean depending on whether or not a mapped key for that action is currently being pressed.
 ```csharp
-if (_keyboardHandler.IsActionPressed("Right"))
+if (_inputHandler.IsActionTriggered("Right"))
     Player.MoveRight();
-else if (_keyboardHandler.IsActionPressed("Left"))
+else if (_inputHandler.IsActionTriggered("Left"))
     Player.MoveLeft();
 ```
 
-#### GetPressedAction()
+#### GetTriggeredAction()
 
 The GetAction method returns as a string the name of the action associated with the currently pressed key.
 ```csharp
-switch (_keyboardHandler.GetPressedAction())
+switch (_inputHandler.GetTriggeredAction())
 {
     case "Right":
         Player.MoveRight();
