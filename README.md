@@ -53,8 +53,8 @@ var actionMap = new Dictionary<string, Action>
 
 _inputHandler.InputByActionMap(actionMap);
 ```
-This setup allows for ActionMaps to be defined on instances of objects as well as per scene or level, and allows for easy context-based switching of ActionMaps by simply changes which map is passed into the InputByActionMap method.
-The less-refined IsActionTriggered and GetTriggeredAction methods are still suppored and do have their use cases, but ActionMaps are the generally perferred solution for defining what happens on each input.
+This setup allows for ActionMaps to be defined on instances of objects as well as per scene or level, and allows for easy context-based switching of ActionMaps by simply changing which map is passed into the InputByActionMap method.
+The less-refined IsActionTriggered and GetTriggeredAction methods are still supported and do have their use cases, but ActionMaps are generally the perferred solution for defining what happens on each input.
 
 #### IsActionTriggered
 
