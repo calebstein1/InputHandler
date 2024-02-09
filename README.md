@@ -1,17 +1,18 @@
 # MonoGame Input Handler
 
-This is a basic input event handler for the MonoGame framework.
-It allows you to map multiple inputs to a single event using a dictionary mapping event names to a list of inputs.
+This is a basic input handler for the MonoGame framework.
+Unlike other input handler libraries out there, this one is action based.
+It allows you to map any number of inputs to a named action, and then to use those named actions in your logic rather than having to refer to specific inputs.
 
 ## Configuration 
 
-You can reference this project in your game project, or just copy all of the .cs files into your project and make sure the namespace is updated accordingly.
-Then, as can be seen in the example configuration, you'll just add dictionary entries containing your event name as a string and a list of inputs that map to that event as a new `List<IInputAction>`.
+You can reference this project in your game project, or just copy all of the .cs files into your project and make sure the namespaces are updated accordingly.
+Then, as can be seen in the example configuration below, you'll just add dictionary entries containing your action name as a string and a list of inputs that map to that action as a new `List<IInputAction>`.
 
 ## Usage
 
-First, you'll need to initialize a new InputHandler object with a keymap, which is a `Dictionary<string, List<IInputAction>>`.
-Here's an example keymap and initialization:
+First, you'll need to initialize a new InputHandler object with an inputmap, which is a `Dictionary<string, List<IInputAction>>`.
+Here's an example inputmap and initialization:
 ```csharp
 private readonly Dictionary<string, List<IInputAction>> _inputMap = new()
 {
@@ -32,21 +33,21 @@ public Game1()
     // Other constructor code...
 }
 ```
-Then there are two methods by which you can use this library in your game loop: IsActionTriggered(string keyAction) and GetTriggeredAction().
+Then there are two methods by which you can use this library in your game loop: IsActionTriggered(string inputAction) and GetTriggeredAction().
 
-#### IsActionPressed(string keyAction)
+#### IsActionTriggered(string inputAction)
 
-The Action method takes the name of a defined action as a parameter and will return a boolean depending on whether or not a mapped key for that action is currently being pressed.
+The IsActionTriggered method takes the name of a defined action as a parameter and will return a boolean depending on whether or not a mapped input for that action is currently being pressed.
 ```csharp
 if (_inputHandler.IsActionTriggered("Right"))
     Player.MoveRight();
-else if (_inputHandler.IsActionTriggered("Left"))
+if (_inputHandler.IsActionTriggered("Left"))
     Player.MoveLeft();
 ```
 
 #### GetTriggeredAction()
 
-The GetAction method returns as a string the name of the action associated with the currently pressed key.
+The GetTriggeredAction method returns as a string the name of the action associated with the currently triggered input.
 ```csharp
 switch (_inputHandler.GetTriggeredAction())
 {
@@ -58,3 +59,12 @@ switch (_inputHandler.GetTriggeredAction())
         break;
 }
 ```
+
+## What's next?
+
+Getting a proper Vector2 from the gamepad control sticks for movement is pretty necessary.
+Control stick movement just feels weird right now without that.
+Top priority to fix.
+
+After that, saving and loading inputmaps to and from files in a serialized format would be nice.
+The current dictionary approach is pretty unwieldy and the whole thing would be much cleaner as JSON or YAML or basically anything else combined with a bit of logic to assemble the dictionary at runtime or new InputHandler initialization.
