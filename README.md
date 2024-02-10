@@ -53,6 +53,33 @@ var actionMap = new Dictionary<string, Action>
 
 _inputHandler.InputByActionMap(actionMap);
 ```
+If you're defining an ActionMap directly on an instance of an object, like the player character, and the methods that are being called exist within that class, you can use the following syntax to define the ActionMap:
+```csharp
+public class Player
+{
+    public Dictionary<string, Action> ActionMap;
+
+    public Player()
+    {
+        ActionMap = new Dictionary<string, Action>
+        {
+            { "Up", MoveUp },
+            { "Down", MoveDown },
+            { "Left", MoveLeft },
+            { "Right", MoveRight },
+            { "PrimaryAction", PrimaryAction },
+            { "SecondaryAction", SecondaryAction },
+        };
+    }
+
+    private void MoveUp()
+    {
+        // Move up logic
+    }
+
+    // Rest of class definition...
+}
+```
 This setup allows for ActionMaps to be defined on instances of objects as well as per scene or level, and allows for easy context-based switching of ActionMaps by simply changing which map is passed into the InputByActionMap method.
 The less-refined IsActionTriggered and GetTriggeredAction methods are still supported and do have their use cases, but ActionMaps are generally the perferred solution for defining what happens on each input.
 
