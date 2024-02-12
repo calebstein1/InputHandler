@@ -3,6 +3,7 @@
 This is a basic input handler for the MonoGame framework.
 Unlike other input handler libraries out there, this one is action based.
 It allows you to map any number of inputs to a named action, and then to use those named actions in your logic rather than having to refer to specific inputs.
+See my [ShootTheTargets](https://github.com/calebstein1/ShootTheTargets) repository for an actual implemented example of this library.
 
 ## Configuration 
 
@@ -112,9 +113,5 @@ switch (_inputHandler.GetTriggeredAction())
 
 ## What's next?
 
-Getting a proper Vector2 from the gamepad control sticks for movement is pretty necessary.
-Control stick movement just feels weird right now without that.
-Top priority to fix.
-
-After that, saving and loading inputmaps to and from files in a serialized format would be nice.
+Saving and loading inputmaps to and from files in a serialized format would be nice.
 The current dictionary approach is pretty unwieldy and the whole thing would be much cleaner as JSON or YAML or basically anything else combined with a bit of logic to assemble the dictionary at runtime or new InputHandler initialization.
