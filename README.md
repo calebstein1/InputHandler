@@ -3,7 +3,7 @@
 This is a basic input handler for the MonoGame framework.
 Unlike other input handler libraries out there, this one is action based.
 It allows you to map any number of inputs to a named action, and then to use those named actions in your logic rather than having to refer to specific inputs.
-See my [ShootTheTargets](https://github.com/calebstein1/ShootTheTargets) repository for an actual implemented example of this library.
+See my [ShootTheTargets-MonoGame](https://github.com/calebstein1/ShootTheTargets-MonoGame) repository for an actual implemented example of this library.
 
 ## Configuration 
 
